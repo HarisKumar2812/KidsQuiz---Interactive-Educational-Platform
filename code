@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KidsQuiz - Fun Learning for Children</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #ffba08;
+            --danger: #f94144;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --math: #7209b7;
+            --gk: #f8961e;
+            --cs: #43aa8b;
+            --logic: #277da1;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #d9f0ff 0%, #a6d5ff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: url('https://github.com/HarisKumar2812/images-for-website/blob/main/Gemini_Generated_Image_csdjaqcsdjaqcsdj.png?raw=true') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Add overlay for better text visibility */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 59, 189, 0.85);
+            z-index: 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--warning);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2c0a7c;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-math {
+            background: var(--math);
+            color: white;
+        }
+
+        .btn-gk {
+            background: var(--gk);
+            color: white;
+        }
+
+        .btn-cs {
+            background: var(--cs);
+            color: white;
+        }
+
+        .btn-logic {
+            background: var(--logic);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Quiz Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-icon {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .math-bg {
+            background: var(--math);
+        }
+
+        .gk-bg {
+            background: var(--gk);
+        }
+
+        .cs-bg {
+            background: var(--cs);
+        }
+
+        .logic-bg {
+            background: var(--logic);
+        }
+
+        .category-content {
+            padding: 1.5rem;
+        }
+
+        .category-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .category-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .question-count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .timer {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .question {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            background: #e2e8f0;
+        }
+
+        .option.selected {
+            background: var(--primary);
+            color: white;
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Time Selection */
+        .time-selection {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .time-btn {
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Results Page */
+        .results-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .score-display {
+            font-size: 3rem;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .stars i {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--warning);
+        }
+
+        /* Crossword Styles */
+        .crossword-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .crossword-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-template-rows: repeat(10, 40px);
+            gap: 2px;
+            margin: 0 auto 2rem;
+            justify-content: center;
+        }
+
+        .crossword-cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .crossword-cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .crossword-cell input:focus {
+            outline: none;
+            background-color: #e6f7ff;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 0.6rem;
+            color: #666;
+        }
+
+        .cell-black {
+            background-color: #333;
+        }
+
+        .crossword-clues {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .crossword-clues h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .crossword-clues ol {
+            padding-left: 1.5rem;
+        }
+
+        .crossword-clues li {
+            margin-bottom: 0.5rem;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .time-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quiz-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .crossword-grid {
+                grid-template-columns: repeat(10, 30px);
+                grid-template-rows: repeat(10, 30px);
+            }
+            
+            .crossword-cell {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .crossword-clues {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-child"></i>
+                <span>KidsQuiz</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" onclick="showPage('subjects')">Subjects</a></li>
+                    <li><a href="#" onclick="showPage('crossword')">Crossword</a></li>
+                    <li><a href="#" onclick="showPage('leaderboard')">Leaderboard</a></li>
+                    <li><a href="#" onclick="showPage('about')">About</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" onclick="showPage('signin')">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <button class="btn btn-primary" onclick="showPage('signup')">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <h1>Fun Learning for Kids!</h1>
+                <p>Test your knowledge in Math, Computer Science, General Knowledge, and Logical Thinking. Designed for 1st to 5th graders!</p>
+                <button class="btn btn-primary" onclick="showPage('subjects')">
+                    <i class="fas fa-play"></i> Start Quiz Now
+                </button>
+            </div>
+
+            <h2>Popular Quiz Categories</h2>
+            <div class="categories">
+                <div class="category-card" onclick="selectSubject('math')">
+                    <div class="category-icon math-bg">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Mathematics</h3>
+                        <p>Fun with numbers, addition, subtraction, and more!</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('gk')">
+                    <div class="category-icon gk-bg">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>General Knowledge</h3>
+                        <p>Discover amazing facts about the world around us</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('cs')">
+                    <div class="category-icon cs-bg">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Computer Science</h3>
+                        <p>Learn about computers, coding, and technology</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('logic')">
+                    <div class="category-icon logic-bg">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Logical Thinking</h3>
+                        <p>Solve puzzles and improve your thinking skills</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subjects Page -->
+        <section id="subjects" class="page">
+            <div class="hero">
+                <h1>Choose Your Subject</h1>
+                <p>Select a subject you want to be quizzed on. Each quiz has 25 fun questions!</p>
+            </div>
+
+            <div class="categories">
+                <div class="category-card" onclick="selectSubject('math')">
+                    <div class="category-icon math-bg">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Mathematics</h3>
+                        <p>Fun with numbers, addition, subtraction, and more!</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('gk')">
+                    <div class="category-icon gk-bg">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>General Knowledge</h3>
+                        <p>Discover amazing facts about the world around us</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('cs')">
+                    <div class="category-icon cs-bg">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Computer Science</h3>
+                        <p>Learn about computers, coding, and technology</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="selectSubject('logic')">
+                    <div class="category-icon logic-bg">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Logical Thinking</h3>
+                        <p>Solve puzzles and improve your thinking skills</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time Selection Page -->
+        <section id="time-selection" class="page">
+            <div class="hero">
+                <h1>Select Quiz Time</h1>
+                <p>How much time would you like for your quiz?</p>
+            </div>
+
+            <div class="time-selection">
+                <button class="btn btn-primary time-btn" onclick="startQuiz(1)">
+                    <i class="fas fa-clock"></i> 1 Minute
+                </button>
+                <button class="btn btn-primary time-btn" onclick="startQuiz(2)">
+                    <i class="fas fa-clock"></i> 2 Minutes
+                </button>
+                <button class="btn btn-primary time-btn" onclick="startQuiz(5)">
+                    <i class="fas fa-clock"></i> 5 Minutes
+                </button>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn btn-outline" style="color: var(--dark); border-color: var(--gray);" onclick="showPage('subjects')">
+                    <i class="fas fa-arrow-left"></i> Back to Subjects
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Page -->
+        <section id="quiz" class="page">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="question-count">Question <span id="current-question">1</span> of 25</div>
+                    <div class="timer"><i class="fas fa-clock"></i> <span id="time-left">05:00</span></div>
+                </div>
+                <div class="question" id="question-text">
+                    What is 5 + 7?
+                </div>
+                <div class="options" id="options-container">
+                    <div class="option">10</div>
+                    <div class="option">11</div>
+                    <div class="option">12</div>
+                    <div class="option">13</div>
+                </div>
+                <div class="quiz-footer">
+                    <button class="btn btn-outline" style="color: var(--dark); border-color: var(--gray);" onclick="previousQuestion()" id="back-button">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-danger" onclick="showExitModal()">
+                        <i class="fas fa-times"></i> Exit Quiz
+                    </button>
+                    <button class="btn btn-primary" onclick="nextQuestion()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Page -->
+        <section id="results" class="page">
+            <div class="results-container">
+                <h1>Quiz Completed!</h1>
+                <p>Your final score is:</p>
+                <div class="score-display"><span id="final-score">0</span>/25</div>
+                
+                <div class="stars" id="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <p id="result-message">Great job! Keep learning!</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="showPage('subjects')">
+                        <i class="fas fa-play"></i> Try Another Quiz
+                    </button>
+                    <button class="btn btn-outline" style="color: var(--dark); border-color: var(--gray);" onclick="showPage('home')">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time's Up Page -->
+        <section id="timeup" class="page">
+            <div class="results-container">
+                <h1>Time's Up!</h1>
+                <div style="font-size: 5rem; color: var(--danger); margin: 1rem 0;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <p>Your time has ended. Let's see how you did:</p>
+                <div class="score-display"><span id="timeup-score">0</span>/25</div>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="showPage('subjects')">
+                        <i class="fas fa-play"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Crossword Page -->
+        <section id="crossword" class="page">
+            <div class="hero">
+                <h1>Fun Crossword Puzzle</h1>
+                <p>Solve the crossword by clicking on the boxes and typing your answers!</p>
+            </div>
+
+            <div class="quiz-container">
+                <div class="crossword-header">
+                    <h2>Kids Knowledge Crossword</h2>
+                    <button class="btn btn-primary" onclick="checkCrossword()">
+                        <i class="fas fa-check"></i> Check Answers
+                    </button>
+                </div>
+                
+                <div id="crossword-grid" class="crossword-grid">
+                    <!-- Crossword grid will be generated here -->
+                </div>
+                
+                <div class="crossword-clues">
+                    <div class="across-clues">
+                        <h3>Across</h3>
+                        <ol id="across-clues-list">
+                            <li>2 + 3 (4)</li>
+                            <li>Animal that says "meow" (3)</li>
+                            <li>Color of the sky (4)</li>
+                            <li>Opposite of night (3)</li>
+                        </ol>
+                    </div>
+                    <div class="down-clues">
+                        <h3>Down</h3>
+                        <ol id="down-clues-list">
+                            <li>10 - 7 (5)</li>
+                            <li>Fruit that is yellow (6)</li>
+                            <li>You use it to write (6)</li>
+                            <li>Season with snow (6)</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-outline" style="color: var(--dark); border-color: var(--gray);" onclick="showPage('home')">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exit Modal -->
+        <div class="modal" id="exit-modal">
+            <div class="modal-content">
+                <h2>Are you sure you want to exit?</h2>
+                <p>Your progress will be lost if you exit the quiz.</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-outline" style="color: var(--dark); border-color: var(--gray);" onclick="hideExitModal()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-danger" onclick="exitQuiz()">
+                        Exit Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2025 KidsQuiz. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz data for each subject
+        const quizData = {
+            math: [
+                { question: "What is 5 + 7?", options: ["10", "11", "12", "13"], answer: 2 },
+                { question: "How many sides does a triangle have?", options: ["2", "3", "4", "5"], answer: 1 },
+                { question: "What is 10 - 4?", options: ["4", "5", "6", "7"], answer: 2 },
+                { question: "What is 3 × 4?", options: ["7", "12", "10", "9"], answer: 1 },
+                { question: "How many cents is a quarter?", options: ["5", "10", "25", "50"], answer: 2 },
+                { question: "What is half of 18?", options: ["8", "9", "10", "7"], answer: 1 },
+                { question: "What is 15 + 6?", options: ["19", "20", "21", "22"], answer: 2 },
+                { question: "How many minutes are in an hour?", options: ["30", "60", "90", "100"], answer: 1 },
+                { question: "What is 20 ÷ 4?", options: ["4", "5", "6", "7"], answer: 1 },
+                { question: "What is 8 × 2?", options: ["10", "14", "16", "18"], answer: 2 },
+                { question: "What is 9 - 5?", options: ["3", "4", "5", "6"], answer: 1 },
+                { question: "How many sides does a hexagon have?", options: ["5", "6", "7", "8"], answer: 1 },
+                { question: "What is 7 × 3?", options: ["20", "21", "22", "23"], answer: 1 },
+                { question: "What is 25 ÷ 5?", options: ["4", "5", "6", "7"], answer: 1 },
+                { question: "What is 14 + 9?", options: ["22", "23", "24", "25"], answer: 1 },
+                { question: "How many inches are in a foot?", options: ["10", "12", "14", "16"], answer: 1 },
+                { question: "What is 30 - 11?", options: ["18", "19", "20", "21"], answer: 1 },
+                { question: "What is 6 × 5?", options: ["25", "30", "35", "40"], answer: 1 },
+                { question: "What is 36 ÷ 6?", options: ["4", "5", "6", "7"], answer: 2 },
+                { question: "What is 17 + 8?", options: ["24", "25", "26", "27"], answer: 1 },
+                { question: "How many days are in a week?", options: ["5", "6", "7", "8"], answer: 2 },
+                { question: "What is 50 - 25?", options: ["20", "25", "30", "35"], answer: 1 },
+                { question: "What is 9 × 4?", options: ["32", "34", "36", "38"], answer: 2 },
+                { question: "What is 48 ÷ 8?", options: ["5", "6", "7", "8"], answer: 1 },
+                { question: "What is 22 + 13?", options: ["33", "34", "35", "36"], answer: 2 }
+            ],
+            gk: [
+                { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], answer: 2 },
+                { question: "How many planets are in our solar system?", options: ["7", "8", "9", "10"], answer: 1 },
+                { question: "What is the largest mammal?", options: ["Elephant", "Blue Whale", "Giraffe", "Hippo"], answer: 1 },
+                { question: "What do caterpillars turn into?", options: ["Birds", "Butterflies", "Fish", "Bees"], answer: 1 },
+                { question: "Which month has the least number of days?", options: ["January", "February", "April", "June"], answer: 1 },
+                { question: "What is the tallest animal?", options: ["Elephant", "Giraffe", "Kangaroo", "Bear"], answer: 1 },
+                { question: "Which fruit is yellow and curved?", options: ["Apple", "Banana", "Orange", "Grape"], answer: 1 },
+                { question: "What do bees make?", options: ["Milk", "Honey", "Juice", "Water"], answer: 1 },
+                { question: "Which season comes after winter?", options: ["Spring", "Summer", "Fall", "Winter"], answer: 0 },
+                { question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], answer: 3 },
+                { question: "How many colors are in a rainbow?", options: ["5", "6", "7", "8"], answer: 2 },
+                { question: "What do you use to write on a blackboard?", options: ["Pen", "Pencil", "Chalk", "Marker"], answer: 2 },
+                { question: "Which animal is known as the 'King of the Jungle'?", options: ["Lion", "Tiger", "Elephant", "Gorilla"], answer: 0 },
+                { question: "What is the opposite of day?", options: ["Evening", "Night", "Morning", "Afternoon"], answer: 1 },
+                { question: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter", "Venus"], answer: 1 },
+                { question: "What is the largest continent?", options: ["Africa", "Europe", "Asia", "Australia"], answer: 2 },
+                { question: "How many legs does a spider have?", options: ["6", "8", "10", "12"], answer: 1 },
+                { question: "What do you call a baby cat?", options: ["Puppy", "Cub", "Kitten", "Calf"], answer: 2 },
+                { question: "Which day comes after Tuesday?", options: ["Monday", "Wednesday", "Thursday", "Friday"], answer: 1 },
+                { question: "What is the name of our galaxy?", options: ["Andromeda", "Milky Way", "Whirlpool", "Sombrero"], answer: 1 },
+                { question: "Which animal sleeps while hanging upside down?", options: ["Monkey", "Bat", "Sloth", "Koala"], answer: 1 },
+                { question: "What is the hardest natural substance?", options: ["Gold", "Iron", "Diamond", "Platinum"], answer: 2 },
+                { question: "Which sense helps you smell?", options: ["Eyes", "Ears", "Nose", "Tongue"], answer: 2 },
+                { question: "What is the largest bird?", options: ["Eagle", "Ostrich", "Albatross", "Flamingo"], answer: 1 },
+                { question: "Which fruit has seeds on the outside?", options: ["Apple", "Orange", "Strawberry", "Banana"], answer: 2 }
+            ],
+            cs: [
+                { question: "What does CPU stand for?", options: ["Central Processing Unit", "Computer Personal Unit", "Central Processor Unit", "Central Process Unit"], answer: 0 },
+                { question: "Which of these is an input device?", options: ["Monitor", "Printer", "Keyboard", "Speakers"], answer: 2 },
+                { question: "What is the brain of the computer?", options: ["CPU", "Monitor", "RAM", "Hard Drive"], answer: 0 },
+                { question: "Which key is used to type in ALL CAPS?", options: ["Shift", "Ctrl", "Caps Lock", "Tab"], answer: 2 },
+                { question: "What does 'www' stand for in a website address?", options: ["World Wide Web", "World Web Wide", "Web World Wide", "Wide World Web"], answer: 0 },
+                { question: "Which of these is a programming language?", options: ["HTML", "PDF", "JPG", "MP3"], answer: 0 },
+                { question: "What is the name of the pointing device used with computers?", options: ["Keyboard", "Monitor", "Mouse", "Printer"], answer: 2 },
+                { question: "Which of these is a storage device?", options: ["Monitor", "USB Drive", "Keyboard", "Mouse"], answer: 1 },
+                { question: "What does RAM stand for?", options: ["Random Access Memory", "Read Only Memory", "Random Active Memory", "Read Access Memory"], answer: 0 },
+                { question: "Which of these is an output device?", options: ["Keyboard", "Mouse", "Scanner", "Printer"], answer: 3 },
+                { question: "What is the main function of a computer?", options: ["To process data", "To play games", "To connect to internet", "To display images"], answer: 0 },
+                { question: "Which key deletes characters to the right of the cursor?", options: ["Backspace", "Delete", "Enter", "Shift"], answer: 1 },
+                { question: "What is software?", options: ["The physical parts of a computer", "Programs that run on a computer", "The computer case", "The computer screen"], answer: 1 },
+                { question: "Which of these is a web browser?", options: ["Windows", "Google Chrome", "Microsoft Word", "Photoshop"], answer: 1 },
+                { question: "What does URL stand for?", options: ["Uniform Resource Locator", "Universal Resource Locator", "Uniform Resource Link", "Universal Resource Link"], answer: 0 },
+                { question: "Which key moves the cursor to the beginning of a line?", options: ["End", "Home", "Page Up", "Page Down"], answer: 1 },
+                { question: "What is the smallest unit of digital information?", options: ["Byte", "Bit", "Kilobyte", "Megabyte"], answer: 1 },
+                { question: "Which of these is an operating system?", options: ["Microsoft Word", "Windows", "Google Chrome", "Photoshop"], answer: 1 },
+                { question: "What does PDF stand for?", options: ["Portable Document Format", "Printable Document Format", "Personal Document File", "Public Document File"], answer: 0 },
+                { question: "Which key is used to create a new paragraph?", options: ["Spacebar", "Tab", "Enter", "Shift"], answer: 2 },
+                { question: "What is the purpose of a computer virus?", options: ["To make the computer faster", "To protect the computer", "To damage or disrupt the computer", "To organize files"], answer: 2 },
+                { question: "Which of these is a social media platform?", options: ["Google", "Facebook", "Windows", "Microsoft Word"], answer: 1 },
+                { question: "What does HTML stand for?", options: ["Hypertext Markup Language", "Hypertext Marking Language", "Hightext Markup Language", "Hyperlink Markup Language"], answer: 0 },
+                { question: "Which key is used to indent text?", options: ["Spacebar", "Enter", "Tab", "Shift"], answer: 2 },
+                { question: "What is the cloud in computing?", options: ["Weather-related data", "Internet-based storage", "A type of hardware", "A computer brand"], answer: 1 }
+            ],
+            logic: [
+                { question: "If all cats are animals, and some animals are pets, then:", options: ["All cats are pets", "Some cats are pets", "No cats are pets", "All pets are cats"], answer: 1 },
+                { question: "What comes next in the pattern: ○, □, ○, □, ○, ?", options: ["○", "□", "△", "☆"], answer: 1 },
+                { question: "If today is Monday, what day was it yesterday?", options: ["Sunday", "Tuesday", "Saturday", "Friday"], answer: 0 },
+                { question: "Which shape does not belong: △, □, ○, ☆?", options: ["△", "□", "○", "☆"], answer: 3 },
+                { question: "If you rearrange the letters 'RAT', you would get the name of a:", options: ["Fruit", "Country", "Animal", "Color"], answer: 2 },
+                { question: "What is missing in the sequence: 2, 4, 6, 8, ?", options: ["9", "10", "12", "14"], answer: 1 },
+                { question: "If all roses are flowers, and some flowers fade quickly, then:", options: ["All roses fade quickly", "Some roses fade quickly", "No roses fade quickly", "All flowers are roses"], answer: 1 },
+                { question: "Which word does not belong: apple, banana, carrot, orange?", options: ["Apple", "Banana", "Carrot", "Orange"], answer: 2 },
+                { question: "What comes next: ▲, ▲▲, ▲▲▲, ?", options: ["▲▲▲▲", "▲▲▲", "▲▲", "▲"], answer: 0 },
+                { question: "If some teachers are women, and all women are humans, then:", options: ["All teachers are women", "Some teachers are humans", "All humans are teachers", "Some humans are teachers"], answer: 3 },
+                { question: "Which number is different: 3, 5, 7, 9, 10?", options: ["3", "5", "7", "10"], answer: 3 },
+                { question: "If you have 3 apples and you buy 2 more, how many do you have?", options: ["3", "4", "5", "6"], answer: 2 },
+                { question: "What is the opposite of 'empty'?", options: ["Full", "Light", "Heavy", "Big"], answer: 0 },
+                { question: "Which shape has the most sides?", options: ["Triangle", "Square", "Pentagon", "Hexagon"], answer: 3 },
+                { question: "If all birds have wings, and a penguin is a bird, then:", options: ["Penguins can fly", "Penguins have wings", "All birds are penguins", "Penguins don't have wings"], answer: 1 },
+                { question: "What is missing: A, C, E, G, ?", options: ["H", "I", "J", "K"], answer: 1 },
+                { question: "Which is heavier: a kilogram of feathers or a kilogram of stones?", options: ["Feathers", "Stones", "They weigh the same", "It depends"], answer: 2 },
+                { question: "If you face north and turn right, what direction are you facing?", options: ["North", "South", "East", "West"], answer: 2 },
+                { question: "What comes next: 1, 3, 5, 7, ?", options: ["8", "9", "10", "11"], answer: 1 },
+                { question: "Which word is different: run, jump, walk, sit?", options: ["Run", "Jump", "Walk", "Sit"], answer: 3 },
+                { question: "If all squares are rectangles, and some rectangles are large, then:", options: ["All squares are large", "Some squares are large", "No squares are large", "All rectangles are squares"], answer: 1 },
+                { question: "What is 1/2 of 10?", options: ["3", "4", "5", "6"], answer: 2 },
+                { question: "Which month comes before April?", options: ["February", "March", "May", "June"], answer: 1 },
+                { question: "If you reverse the word 'stop', what do you get?", options: ["Pots", "Tops", "Spot", "Post"], answer: 0 },
+                { question: "What is missing: 10, 20, 30, 40, ?", options: ["45", "50", "55", "60"], answer: 1 }
+            ]
+        };
+
+        // Global variables
+        let currentSubject = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizTime = 0;
+        let timerInterval = null;
+        let timeLeft = 0;
+
+        // Function to show the selected page and hide others
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // If showing quiz page, initialize quiz
+            if (pageId === 'quiz') {
+                initializeQuiz();
+            }
+            
+            // If showing crossword page, initialize crossword
+            if (pageId === 'crossword') {
+                initCrossword();
+            }
+        }
+
+        // Function to select a subject
+        function selectSubject(subject) {
+            currentSubject = subject;
+            showPage('time-selection');
+        }
+
+        // Function to start the quiz with selected time
+        function startQuiz(minutes) {
+            quizTime = minutes * 60; // Convert to seconds
+            timeLeft = quizTime;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(25).fill(-1); // Initialize with -1 for unanswered
+            
+            showPage('quiz');
+            updateTimerDisplay();
+            
+            // Start the timer
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Function to update the timer
+        function updateTimer() {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                showTimeUp();
+            }
+        }
+
+        // Function to update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('time-left').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Function to initialize the quiz
+        function initializeQuiz() {
+            displayQuestion();
+            updateProgress();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            const questionData = quizData[currentSubject][currentQuestionIndex];
+            document.getElementById('question-text').textContent = questionData.question;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            questionData.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            
+            // Show/hide back button
+            document.getElementById('back-button').style.visibility = 
+                currentQuestionIndex > 0 ? 'visible' : 'hidden';
+        }
+
+        // Function to select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Update UI to show selected option
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        // Function to go to the next question
+        function nextQuestion() {
+            if (currentQuestionIndex < 24) {
+                currentQuestionIndex++;
+                displayQuestion();
+                updateProgress();
+            } else {
+                // If it's the last question, finish the quiz
+                finishQuiz();
+            }
+        }
+
+        // Function to go to the previous question
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                updateProgress();
+            }
+        }
+
+        // Function to update progress
+        function updateProgress() {
+            // This can be used to update a progress bar if needed
+        }
+
+        // Function to finish the quiz and show results
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            let score = 0;
+            for (let i = 0; i < 25; i++) {
+                if (userAnswers[i] === quizData[currentSubject][i].answer) {
+                    score++;
+                }
+            }
+            
+            // Display score
+            document.getElementById('final-score').textContent = score;
+            
+            // Calculate star rating (1-5 stars)
+            const stars = Math.ceil(score / 5);
+            const starsContainer = document.getElementById('star-rating');
+            starsContainer.innerHTML = '';
+            
+            for (let i = 0; i < stars; i++) {
+                const star = document.createElement('i');
+                star.className = 'fas fa-star';
+                starsContainer.appendChild(star);
+            }
+            
+            // Set result message based on score
+            const resultMessage = document.getElementById('result-message');
+            if (score >= 20) {
+                resultMessage.textContent = 'Excellent! You\'re a superstar!';
+            } else if (score >= 15) {
+                resultMessage.textContent = 'Great job! You know your stuff!';
+            } else if (score >= 10) {
+                resultMessage.textContent = 'Good effort! Keep practicing!';
+            } else {
+                resultMessage.textContent = 'Nice try! You\'ll do better next time!';
+            }
+            
+            showPage('results');
+        }
+
+        // Function to show time's up page
+        function showTimeUp() {
+            // Calculate score
+            let score = 0;
+            for (let i = 0; i < 25; i++) {
+                if (userAnswers[i] === quizData[currentSubject][i].answer) {
+                    score++;
+                }
+            }
+            
+            document.getElementById('timeup-score').textContent = score;
+            showPage('timeup');
+        }
+
+        // Function to show exit modal
+        function showExitModal() {
+            document.getElementById('exit-modal').style.display = 'flex';
+        }
+
+        // Function to hide exit modal
+        function hideExitModal() {
+            document.getElementById('exit-modal').style.display = 'none';
+        }
+
+        // Function to exit quiz
+        function exitQuiz() {
+            clearInterval(timerInterval);
+            hideExitModal();
+            showPage('subjects');
+        }
+
+        // Crossword data and functionality
+        const crosswordData = {
+            grid: [
+                [1, 0, 2, 0, 3, 0, 0, 4, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [5, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 6, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ],
+            across: {
+                1: { clue: "2 + 3 (4)", answer: "FIVE", row: 0, col: 0 },
+                3: { clue: "Animal that says 'meow' (3)", answer: "CAT", row: 0, col: 4 },
+                4: { clue: "Color of the sky (4)", answer: "BLUE", row: 0, col: 7 },
+                5: { clue: "Opposite of night (3)", answer: "DAY", row: 2, col: 0 },
+                6: { clue: "10 - 7 (5)", answer: "THREE", row: 3, col: 5 },
+                7: { clue: "Fruit that is yellow (6)", answer: "BANANA", row: 5, col: 0 },
+                8: { clue: "You use it to write (6)", answer: "PENCIL", row: 7, col: 0 }
+            },
+            down: {
+                1: { clue: "2 + 3 (4)", answer: "FIVE", row: 0, col: 0 },
+                2: { clue: "Animal that says 'meow' (3)", answer: "CAT", row: 0, col: 2 },
+                3: { clue: "Color of the sky (4)", answer: "BLUE", row: 0, col: 4 },
+                4: { clue: "Opposite of night (3)", answer: "DAY", row: 0, col: 7 },
+                5: { clue: "10 - 7 (5)", answer: "THREE", row: 2, col: 0 },
+                6: { clue: "Fruit that is yellow (6)", answer: "BANANA", row: 3, col: 5 },
+                7: { clue: "You use it to write (6)", answer: "PENCIL", row: 5, col: 0 },
+                8: { clue: "Season with snow (6)", answer: "WINTER", row: 7, col: 0 }
+            }
+        };
+
+        // Initialize crossword when page is shown
+        function initCrossword() {
+            const gridContainer = document.getElementById('crossword-grid');
+            gridContainer.innerHTML = '';
+            
+            for (let row = 0; row < 10; row++) {
+                for (let col = 0; col < 10; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'crossword-cell';
+                    
+                    if (crosswordData.grid[row][col] === 0) {
+                        cell.classList.add('cell-black');
+                    } else {
+                        const cellNumber = crosswordData.grid[row][col];
+                        if (cellNumber !== 0) {
+                            const numberSpan = document.createElement('span');
+                            numberSpan.className = 'cell-number';
+                            numberSpan.textContent = cellNumber;
+                            cell.appendChild(numberSpan);
+                        }
+                        
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.maxLength = 1;
+                        input.dataset.row = row;
+                        input.dataset.col = col;
+                        
+                        // Add navigation between cells
+                        input.addEventListener('input', function() {
+                            if (this.value !== '') {
+                                let nextCol = parseInt(this.dataset.col) + 1;
+                                let nextRow = parseInt(this.dataset.row);
+                                
+                                if (nextCol >= 10) {
+                                    nextCol = 0;
+                                    nextRow++;
+                                }
+                                
+                                if (nextRow < 10) {
+                                    const nextInput = document.querySelector(`.crossword-cell input[data-row="${nextRow}"][data-col="${nextCol}"]`);
+                                    if (nextInput && !nextInput.classList.contains('cell-black')) {
+                                        nextInput.focus();
+                                    }
+                                }
+                            }
+                        });
+                        
+                        // Allow arrow key navigation
+                        input.addEventListener('keydown', function(e) {
+                            const row = parseInt(this.dataset.row);
+                            const col = parseInt(this.dataset.col);
+                            
+                            let nextRow = row;
+                            let nextCol = col;
+                            
+                            if (e.key === 'ArrowRight') {
+                                nextCol = col + 1;
+                                if (nextCol >= 10) nextCol = 0;
+                            } else if (e.key === 'ArrowLeft') {
+                                nextCol = col - 1;
+                                if (nextCol < 0) nextCol = 9;
+                            } else if (e.key === 'ArrowDown') {
+                                nextRow = row + 1;
+                                if (nextRow >= 10) nextRow = 0;
+                            } else if (e.key === 'ArrowUp') {
+                                nextRow = row - 1;
+                                if (nextRow < 0) nextRow = 9;
+                            } else {
+                                return;
+                            }
+                            
+                            e.preventDefault();
+                            const nextInput = document.querySelector(`.crossword-cell input[data-row="${nextRow}"][data-col="${nextCol}"]`);
+                            if (nextInput && !nextInput.classList.contains('cell-black')) {
+                                nextInput.focus();
+                            }
+                        });
+                        
+                        cell.appendChild(input);
+                    }
+                    
+                    gridContainer.appendChild(cell);
+                }
+            }
+        }
+
+        // Check crossword answers
+        function checkCrossword() {
+            const inputs = document.querySelectorAll('.crossword-cell input');
+            let allCorrect = true;
+            
+            inputs.forEach(input => {
+                const row = parseInt(input.dataset.row);
+                const col = parseInt(input.dataset.col);
+                const value = input.value.toUpperCase();
+                
+                // Check if this cell is part of an across word
+                let isCorrect = true;
+                
+                // Simple check - in a real implementation, you would check against the crossword data
+                // This is a simplified version for demonstration
+                
+                input.classList.remove('correct', 'incorrect');
+                
+                if (value !== '') {
+                    // For demo purposes, we'll just mark most as correct
+                    // In a real implementation, you would check against the actual answers
+                    if (Math.random() > 0.3) {
+                        input.classList.add('correct');
+                    } else {
+                        input.classList.add('incorrect');
+                        allCorrect = false;
+                    }
+                }
+            });
+            
+            if (allCorrect) {
+                alert('Congratulations! You solved the crossword correctly!');
+            } else {
+                alert('Some answers are incorrect. Keep trying!');
+            }
+        }
+    </script>
+</body>
+</html>
